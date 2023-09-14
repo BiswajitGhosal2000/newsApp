@@ -1,15 +1,22 @@
 import React, { Component } from "react";
 import NewsItem from "./NewsItem";
 import Spinner from "./Spinner";
+import PropTypes from "prop-types";
 
 export class News extends Component {
+  static defaultProps = { country: "in", pageSize: 9 };
+  static propTypes = {
+    name: PropTypes.string,
+    pageSize: PropTypes.number,
+    category: PropTypes.string,
+  };
   constructor(props) {
     super(props);
     this.state = { articles: [], loading: false, page: 1 };
   }
 
   async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=8a6c80eda7fc42388b12954d0e59aeed&page=1&pageSize=${this.props.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=8a6c80eda7fc42388b12954d0e59aeed&page=1&pageSize=${this.props.pageSize}`;
     this.setState({ loading: true });
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -21,7 +28,11 @@ export class News extends Component {
     });
   }
   handlePrevClick = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=8a6c80eda7fc42388b12954d0e59aeed&page=${
+    let url = `https://newsapi.org/v2/top-headlines?country=${
+      this.props.country
+    }&category=${
+      this.props.category
+    }&apiKey=8a6c80eda7fc42388b12954d0e59aeed&page=${
       this.state.page - 1
     }&pageSize=${this.props.pageSize}`;
     this.setState({ loading: true });
@@ -34,7 +45,11 @@ export class News extends Component {
     });
   };
   handleNextClick = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=8a6c80eda7fc42388b12954d0e59aeed&page=${
+    let url = `https://newsapi.org/v2/top-headlines?country=${
+      this.props.country
+    }&category=${
+      this.props.category
+    }&apiKey=8a6c80eda7fc42388b12954d0e59aeed&page=${
       this.state.page + 1
     }&pageSize=${this.props.pageSize}`;
     this.setState({ loading: true });
@@ -49,7 +64,7 @@ export class News extends Component {
   };
   render() {
     return (
-      <div className="container my-3">
+      <div className="container my-3 border">
         <h2 className="text-center">{this.props.headline}</h2>
         {this.state.loading && <Spinner />}
         <div className="row">
@@ -57,9 +72,9 @@ export class News extends Component {
             return (
               <div className="col-md-4" key={element.url}>
                 <NewsItem
-                  title={element.title ? element.title.slice(0, 45) : ""}
+                  title={element.title ? element.title.slice(0, 30) : ""}
                   description={
-                    element.description ? element.description.slice(0, 88) : ""
+                    element.description ? element.description.slice(0, 50) : ""
                   }
                   imgUrl={
                     element.urlToImage
