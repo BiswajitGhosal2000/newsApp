@@ -25,6 +25,8 @@ export class News extends Component {
       articles: parsedData.articles,
       totalResults: parsedData.totalResults,
       loading: false,
+      publishedAt: parsedData.publishedAt,
+      author: parsedData.author,
     });
   }
   handlePrevClick = async () => {
@@ -55,7 +57,6 @@ export class News extends Component {
     this.setState({ loading: true });
     let data = await fetch(url);
     let parsedData = await data.json();
-    console.log(parsedData);
     this.setState({
       page: this.state.page + 1,
       articles: parsedData.articles,
@@ -64,10 +65,12 @@ export class News extends Component {
   };
   render() {
     return (
-      <div className="container my-3 border">
-        <h2 className="text-center">{this.props.headline}</h2>
+      <div className="container my-3 rounded bg-light">
+        <h2 className="text-center p-2 border-bottom border-info">
+          {this.props.headline}
+        </h2>
         {this.state.loading && <Spinner />}
-        <div className="row">
+        <div className="row ">
           {this.state.articles.map((element) => {
             return (
               <div className="col-md-4" key={element.url}>
@@ -82,12 +85,15 @@ export class News extends Component {
                       : "https://t3.ftcdn.net/jpg/03/27/55/60/360_F_327556002_99c7QmZmwocLwF7ywQ68ChZaBry1DbtD.jpg"
                   }
                   newsUrl={element.url}
+                  publishedAt={element.publishedAt}
+                  author={element.author}
+                  source={element.source.name}
                 />
               </div>
             );
           })}
         </div>
-        <div className="container d-flex justify-content-between w-75">
+        <div className="container d-flex justify-content-between w-75 p-4">
           <button
             type="button"
             disabled={this.state.page <= 1}

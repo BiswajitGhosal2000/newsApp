@@ -1,8 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@2,100&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@1,100&display=swap");
 body {
-  background-color: #c2dde6;
+  background-color: grey;
   font-family: "Libre Franklin", sans-serif;
-  font-weight: bold;
 }
 .App {
   text-align: center;
