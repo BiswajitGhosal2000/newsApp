@@ -4,7 +4,7 @@ import Spinner from "./Spinner";
 import PropTypes from "prop-types";
 
 export class News extends Component {
-  static defaultProps = { country: "in", pageSize: 9 };
+  static defaultProps = { country: "in", pageSize: 15 };
   static propTypes = {
     name: PropTypes.string,
     pageSize: PropTypes.number,
@@ -13,10 +13,13 @@ export class News extends Component {
   constructor(props) {
     super(props);
     this.state = { articles: [], loading: false, page: 1 };
+    document.title = `${
+      this.props.category[0].toUpperCase() + this.props.category.slice(1)
+    } : News Today`;
   }
 
-  async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=8a6c80eda7fc42388b12954d0e59aeed&page=1&pageSize=${this.props.pageSize}`;
+  async updateNews() {
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=8a6c80eda7fc42388b12954d0e59aeed&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     this.setState({ loading: true });
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -29,45 +32,25 @@ export class News extends Component {
       author: parsedData.author,
     });
   }
+
+  async componentDidMount() {
+    this.updateNews();
+  }
   handlePrevClick = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=${
-      this.props.country
-    }&category=${
-      this.props.category
-    }&apiKey=8a6c80eda7fc42388b12954d0e59aeed&page=${
-      this.state.page - 1
-    }&pageSize=${this.props.pageSize}`;
-    this.setState({ loading: true });
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    this.setState({
-      page: this.state.page - 1,
-      articles: parsedData.articles,
-      loading: false,
-    });
+    this.setState({ page: this.state.page - 1 });
+    this.updateNews();
   };
   handleNextClick = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=${
-      this.props.country
-    }&category=${
-      this.props.category
-    }&apiKey=8a6c80eda7fc42388b12954d0e59aeed&page=${
-      this.state.page + 1
-    }&pageSize=${this.props.pageSize}`;
-    this.setState({ loading: true });
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    this.setState({
-      page: this.state.page + 1,
-      articles: parsedData.articles,
-      loading: false,
-    });
+    this.setState({ page: this.state.page + 1 });
+    this.updateNews();
   };
+
   render() {
     return (
       <div className="container my-3 rounded bg-light">
         <h2 className="text-center p-2 border-bottom border-info">
-          {this.props.headline}
+          Top Headlines on{" "}
+          {this.props.category[0].toUpperCase() + this.props.category.slice(1)}
         </h2>
         {this.state.loading && <Spinner />}
         <div className="row ">
