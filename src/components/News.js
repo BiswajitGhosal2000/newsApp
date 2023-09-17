@@ -10,12 +10,12 @@ export class News extends Component {
     pageSize: PropTypes.number,
     category: PropTypes.string,
   };
+
   constructor(props) {
     super(props);
     this.state = { articles: [], loading: false, page: 1 };
-    document.title = `${
-      this.props.category[0].toUpperCase() + this.props.category.slice(1)
-    } : News Today`;
+    document.title = `${this.props.category[0].toUpperCase() + this.props.category.slice(1)
+      } : News Today`;
   }
 
   async updateNews() {
@@ -58,15 +58,9 @@ export class News extends Component {
             return (
               <div className="col-md-4" key={element.url}>
                 <NewsItem
-                  title={element.title ? element.title.slice(0, 30) : ""}
-                  description={
-                    element.description ? element.description.slice(0, 50) : ""
-                  }
-                  imgUrl={
-                    element.urlToImage
-                      ? element.urlToImage
-                      : "https://t3.ftcdn.net/jpg/03/27/55/60/360_F_327556002_99c7QmZmwocLwF7ywQ68ChZaBry1DbtD.jpg"
-                  }
+                  title={element.title ? element.title.slice(0, 30) : "Unknown"}
+                  description={element.description ? element.description.slice(0, 50) : "Unknown"}
+                  imgUrl={element.urlToImage ? element.urlToImage : "https://t3.ftcdn.net/jpg/03/27/55/60/360_F_327556002_99c7QmZmwocLwF7ywQ68ChZaBry1DbtD.jpg"}
                   newsUrl={element.url}
                   publishedAt={element.publishedAt}
                   author={element.author}
