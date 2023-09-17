@@ -29,7 +29,7 @@ export class Navbar extends Component {
             <ul className="navbar-nav m-auto">
               <li className="nav-item mx-4">
                 <Link className="nav-link" to="/">
-                  Breaking News <span className="sr-only">(current)</span>
+                  General <span className="sr-only">(current)</span>
                 </Link>
               </li>
               <li className="nav-item mx-4">
