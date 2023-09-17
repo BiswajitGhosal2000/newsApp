@@ -8,7 +8,7 @@ export class NewsItem extends Component {
       <div className="my-3">
         <div className="card">
           <img className="card-img-top img-fluid" src={imgUrl} alt="Card cap" style={{ height: "12rem" }} />
-          <span class="position-absolute top-0 start-100 translate-middle badge badge-pill badge-danger">
+          <span className="position-absolute top-0 start-100 translate-middle badge badge-pill badge-danger">
             {source}
           </span>
           <div className="card-body">
