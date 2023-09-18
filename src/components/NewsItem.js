@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 
 export class NewsItem extends Component {
   render() {
@@ -26,7 +26,7 @@ export class NewsItem extends Component {
             </p>
           </div>
           <div className="card-footer">
-            <Link to={`/details:${newsUrl}`} target="_blank" rel="noreferrer" className="btn btn-primary w-100">Read More</Link>
+            <a href={newsUrl} target="_blank" rel="noreferrer" className="btn btn-primary w-100">Read More</a>
           </div>
         </div>
       </div>

@@ -35,34 +35,36 @@ export class News extends Component {
     });
     this.props.setProgress(100);
   }
-  // fetchMoreData = async () => {
-  //   console.log("Fetch More Data Called")
-  //   this.setState({ page: this.state.page + 1, });
-  //   const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
-  //   let data = await fetch(url);
-  //   let parsedData = await data.json();
-  //   this.setState({
-  //     articles: this.state.articles.concat(parsedData.articles),
-  //     totalResults: parsedData.totalResults,
+  fetchMoreData = () => {
+    console.log("Fetch More Data Called")
+    this.setState({ page: this.state.page + 1, }, async () => {
+      const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      this.setState({
+        articles: this.state.articles.concat(parsedData.articles),
+        totalResults: parsedData.totalResults,
+      });
+    });
+
+  };
+  // fetchMoreData = () => {
+  //   this.setState({ page: this.state.page + 1 }, () => {
+  //     // Now, the state has been updated, and you can use the new page value here.
+  //     const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+  //     fetch(url)
+  //       .then((data) => data.json())
+  //       .then((parsedData) => {
+  //         this.setState({
+  //           articles: this.state.articles.concat(parsedData.articles),
+  //           totalResults: parsedData.totalResults,
+  //         });
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error fetching data:", error);
+  //       });
   //   });
   // };
-  fetchMoreData = () => {
-    this.setState({ page: this.state.page + 1 }, () => {
-      // Now, the state has been updated, and you can use the new page value here.
-      const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
-      fetch(url)
-        .then((data) => data.json())
-        .then((parsedData) => {
-          this.setState({
-            articles: this.state.articles.concat(parsedData.articles),
-            totalResults: parsedData.totalResults,
-          });
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-        });
-    });
-  };
 
 
   render() {

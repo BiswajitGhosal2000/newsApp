@@ -25,7 +25,7 @@ export default class App extends Component {
             height={3}
             color='#f11946'
             progress={this.state.progress}
-            onLoaderFinished={() => this.state.setProgress(10)}
+            onLoaderFinished={() => this.setProgress(10)}
           />
           <Routes>
             <Route exact path="/" element={<News setProgress={this.setProgress} apiKey={this.apiKey} key="general" category="general" />}></Route>
