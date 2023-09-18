@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import NewsItem from "./NewsItem";
-import Spinner from "./Spinner";
 import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
 
+import NewsItem from "./NewsItem";
+import Spinner from "./Spinner";
 
 export class News extends Component {
   static defaultProps = { country: "in", pageSize: 6 };
@@ -20,37 +20,50 @@ export class News extends Component {
       } : News Today`;
   }
 
-  async updateNews() {
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=8a6c80eda7fc42388b12954d0e59aeed&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+  async componentDidMount() {
+    this.props.setProgress(10);
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     this.setState({ loading: true });
     let data = await fetch(url);
+    this.props.setProgress(40);
     let parsedData = await data.json();
-    console.log(parsedData);
+    this.props.setProgress(70);
     this.setState({
       articles: parsedData.articles,
       totalResults: parsedData.totalResults,
       loading: false,
     });
+    this.props.setProgress(100);
   }
-
-  async componentDidMount() {
-    this.updateNews();
-  }
-  fetchMoreData = async () => {
-    this.setState({
-      page: this.state.page + 1,
-    });
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=8a6c80eda7fc42388b12954d0e59aeed&page=${this.state.page}&pageSize=${this.props.pageSize}`;
-    this.setState({ loading: true });
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    console.log(parsedData);
-    this.setState({
-      articles: this.state.articles.concat(parsedData.articles),
-      totalResults: parsedData.totalResults,
-      loading: false,
+  // fetchMoreData = async () => {
+  //   console.log("Fetch More Data Called")
+  //   this.setState({ page: this.state.page + 1, });
+  //   const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+  //   let data = await fetch(url);
+  //   let parsedData = await data.json();
+  //   this.setState({
+  //     articles: this.state.articles.concat(parsedData.articles),
+  //     totalResults: parsedData.totalResults,
+  //   });
+  // };
+  fetchMoreData = () => {
+    this.setState({ page: this.state.page + 1 }, () => {
+      // Now, the state has been updated, and you can use the new page value here.
+      const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+      fetch(url)
+        .then((data) => data.json())
+        .then((parsedData) => {
+          this.setState({
+            articles: this.state.articles.concat(parsedData.articles),
+            totalResults: parsedData.totalResults,
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
     });
   };
+
 
   render() {
     return (
@@ -73,10 +86,8 @@ export class News extends Component {
                       title={element.title ? element.title.slice(0, 30) : "Unknown"}
                       description={element.description ? element.description.slice(0, 50) : "Unknown"}
                       imgUrl={element.urlToImage ? element.urlToImage : "https://t3.ftcdn.net/jpg/03/27/55/60/360_F_327556002_99c7QmZmwocLwF7ywQ68ChZaBry1DbtD.jpg"}
-                      newsUrl={element.url}
-                      publishedAt={element.publishedAt}
-                      author={element.author}
-                      source={element.source.name}
+                      newsUrl={element.url} publishedAt={element.publishedAt}
+                      author={element.author} source={element.source.name}
                     />
                   </div>
                 );
