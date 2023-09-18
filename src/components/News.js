@@ -6,7 +6,6 @@ import NewsItem from "./NewsItem";
 import Spinner from "./Spinner";
 
 export class News extends Component {
-
   static defaultProps = { country: "in", pageSize: 6 };
   static propTypes = {
     name: PropTypes.string,
@@ -47,7 +46,6 @@ export class News extends Component {
   //     totalResults: parsedData.totalResults,
   //   });
   // };
-
   fetchMoreData = () => {
     this.setState({ page: this.state.page + 1 }, () => {
       // Now, the state has been updated, and you can use the new page value here.
